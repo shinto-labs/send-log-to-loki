@@ -1,0 +1,42 @@
+name: 'Send to Loki'
+description: 'A GitHub Action to send logs to Loki'
+inputs:
+  START_TIME:
+    description: 'Start time of the workflow'
+    required: true
+  LOKI_ADDRESS:
+    description: 'Loki server address'
+    required: true
+  LOKI_USERNAME:
+    description: 'Loki username'
+    required: true
+  LOKI_PASSWORD:
+    description: 'Loki password'
+    required: true
+  REPOSITORY:
+    description: 'GitHub repository'
+    required: true
+  WORKFLOW:
+    description: 'GitHub workflow name'
+    required: true
+  STATUS:
+    description: 'Workflow status'
+    required: true
+  RUN_NUMBER:
+    description: 'Run number'
+    required: true
+  ACTOR:
+    description: 'Actor who triggered the workflow'
+    required: true
+  URL:
+    description: 'URL of the workflow run'
+    required: true
+  REF:
+    description: 'Git reference'
+    required: true
+  VALUES:
+    description: 'Additional values'
+    required: false
+runs:
+  using: 'node20'
+  main: 'index.js'
