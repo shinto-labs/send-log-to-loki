@@ -31805,78 +31805,26 @@ module.exports = parseParams
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__nccwpck_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__nccwpck_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__nccwpck_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__nccwpck_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-__nccwpck_require__.r(__webpack_exports__);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(7484);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(3228);
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(9896);
-/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(fs__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(6928);
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__nccwpck_require__.n(path__WEBPACK_IMPORTED_MODULE_3__);
+const core = __nccwpck_require__(7484);
+const github = __nccwpck_require__(3228);
+const { writeFileSync } = __nccwpck_require__(9896);
+const path = __nccwpck_require__(6928);
 
-
-
-
-
-const timeFilePath = path__WEBPACK_IMPORTED_MODULE_3__.join(
+const timeFilePath = path.join(
   process.env.GITHUB_WORKSPACE || "",
   "action_time.txt"
 );
 
 async function writeStartTime() {
   const startTime = Date.now().toString();
-  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Writing start time: ${startTime}`);
-  fs__WEBPACK_IMPORTED_MODULE_2__.writeFileSync(timeFilePath, startTime);
+  core.info(`Writing start time: ${startTime}`);
+  writeFileSync(timeFilePath, startTime);
 }
 
 async function sendLog(
@@ -31886,23 +31834,23 @@ async function sendLog(
   status,
   additional_labels
 ) {
-  let log_message = `workflow=${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.workflow}`;
-  log_message += ` repository_owner=${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner}`;
-  log_message += ` repository_name=${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo}`;
+  let log_message = `workflow=${github.context.workflow}`;
+  log_message += ` repository_owner=${github.context.repo.owner}`;
+  log_message += ` repository_name=${github.context.repo.repo}`;
   log_message += ` status=${status}`;
-  log_message += ` run_number=${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.runNumber}`;
-  log_message += ` actor=${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.actor}`;
-  log_message += ` url=${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.repository.html_url}/actions/runs/${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.runId}`;
-  log_message += ` ref=${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.ref}`;
+  log_message += ` run_number=${github.context.runNumber}`;
+  log_message += ` actor=${github.context.actor}`;
+  log_message += ` url=${github.context.payload.repository.html_url}/actions/runs/${github.context.runId}`;
+  log_message += ` ref=${github.context.ref}`;
 
-  if (fs__WEBPACK_IMPORTED_MODULE_2__.existsSync(timeFilePath)) {
-    const startTime = parseInt(fs__WEBPACK_IMPORTED_MODULE_2__.readFileSync(timeFilePath, "utf8"), 10);
+  if (fs.existsSync(timeFilePath)) {
+    const startTime = parseInt(fs.readFileSync(timeFilePath, "utf8"), 10);
     const endTime = Date.now();
     const duration = Math.round((endTime - startTime) / 1000);
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Calculated duration from start time: ${duration}`);
+    core.info(`Calculated duration from start time: ${duration}`);
     log_message += ` duration=${duration}`;
   } else {
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.warning(
+    core.warning(
       `
       No start time found
       add a step with the following code at the beginning of your workflow to calculate the duration:
@@ -31928,7 +31876,7 @@ async function sendLog(
     ],
   };
 
-  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Sending log:\n${JSON.stringify(log_entry)}`);
+  core.info(`Sending log:\n${JSON.stringify(log_entry)}`);
 
   try {
     const response = await fetch(`${loki_address}/loki/api/v1/push`, {
@@ -31942,22 +31890,22 @@ async function sendLog(
       body: JSON.stringify(log_entry),
     });
     if (!response.ok) {
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Failed to send log: ${response.statusText}`);
+      core.setFailed(`Failed to send log: ${response.statusText}`);
     }
   } catch (error) {
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Failed to send log: ${error}`);
+    core.setFailed(`Failed to send log: ${error}`);
   }
 }
 
 async function run() {
-  const measurement = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("measurement");
+  const measurement = core.getInput("measurement");
   if (measurement == "start") {
     await writeStartTime();
   } else {
-    const loki_address = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("loki_address");
-    const loki_username = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("loki_username");
-    const loki_password = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("loki_password");
-    const status = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("status");
+    const loki_address = core.getInput("loki_address");
+    const loki_username = core.getInput("loki_username");
+    const loki_password = core.getInput("loki_password");
+    const status = core.getInput("status");
 
     for (const [key, value] of Object.entries({
       loki_address,
@@ -31966,11 +31914,11 @@ async function run() {
       status,
     })) {
       if (!value) {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Missing required input: ${key}`);
+        core.setFailed(`Missing required input: ${key}`);
       }
     }
 
-    let additional_labels = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("additional_labels");
+    let additional_labels = core.getInput("additional_labels");
     additional_labels = additional_labels ? " " + additional_labels : "";
 
     await sendLog(
@@ -31984,8 +31932,6 @@ async function run() {
 }
 
 run();
-
-})();
 
 module.exports = __webpack_exports__;
 /******/ })()
