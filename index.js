@@ -1,7 +1,7 @@
-import * as core from "@actions/core";
-import * as github from "@actions/github";
-import * as fs from "fs";
-import * as path from "path";
+const core = require("@actions/core");
+const github = require("@actions/github");
+const { writeFileSync } = require("fs");
+const path = require("path");
 
 const timeFilePath = path.join(
   process.env.GITHUB_WORKSPACE || "",
@@ -11,7 +11,7 @@ const timeFilePath = path.join(
 async function writeStartTime() {
   const startTime = Date.now().toString();
   core.info(`Writing start time: ${startTime}`);
-  fs.writeFileSync(timeFilePath, startTime);
+  writeFileSync(timeFilePath, startTime);
 }
 
 async function sendLog(
