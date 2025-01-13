@@ -20,12 +20,12 @@ async function sendLog(
   status,
   additional_labels
 ) {
-  let log_message = `workflow='${github.context.workflow}'`;
+  let log_message = `workflow=\\"${github.context.workflow}\\"`;
   log_message += ` repository_owner=${github.context.repo.owner}`;
   log_message += ` repository_name=${github.context.repo.repo}`;
   log_message += ` status=${status}`;
   log_message += ` run_number=${github.context.runNumber}`;
-  log_message += ` actor='${github.context.actor}'`;
+  log_message += ` actor=\\"${github.context.actor}\\"`;
   log_message += ` url=${github.context.payload.repository.html_url}/actions/runs/${github.context.runId}`;
   log_message += ` ref=${github.context.ref}`;
 
