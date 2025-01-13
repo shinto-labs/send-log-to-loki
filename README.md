@@ -39,7 +39,7 @@ jobs:
           loki_username: ${{ secrets.LOKI_USERNAME }}
           loki_password: ${{ secrets.LOKI_PASSWORD }}
           status: ${{ job.status }}
-          additional_labels: "example_label=example_value"
+          additional_labels: "example_label=\"example_value\""
 ```
 
 ## Default Labels included in the log
