@@ -11,20 +11,6 @@ This GitHub Action sends logs to a Loki server. It can record the start time of 
 - `loki_password`: Loki password required to send log.
 - `additional_labels`: Additional labels to be added to the log in logfmt format.
 
-## Default Labels
-
-The following default labels are provided in the log message:
-
-- `workflow`: The name of the workflow.
-- `repository_owner`: The owner of the repository.
-- `repository_name`: The name of the repository.
-- `status`: The status of the log message (success or failure).
-- `run_number`: The run number of the workflow.
-- `actor`: The user who triggered the workflow.
-- `url`: The URL to the workflow run.
-- `ref`: The git reference (branch or tag).
-- `duration`: The duration of the job in seconds (if the start time was recorded).
-
 ## Example Workflow
 
 ```yaml
@@ -49,9 +35,23 @@ jobs:
       - name: Send Logs to Loki
         uses: shinto-labs/send-log-to-loki@v1.0.0
         with:
-          loki_address: ${{ secrets.LOKI_ADDRESS }}
+          loki_address: "http://your-loki-instance:3100"
           loki_username: ${{ secrets.LOKI_USERNAME }}
           loki_password: ${{ secrets.LOKI_PASSWORD }}
           status: ${{ job.status }}
           additional_labels: "example_label=example_value"
 ```
+
+## Default Labels included in the log
+
+The following default labels are provided in the log message:
+
+- `workflow`: The name of the workflow.
+- `repository_owner`: The owner of the repository.
+- `repository_name`: The name of the repository.
+- `status`: The status of the log message (success or failure).
+- `run_number`: The run number of the workflow.
+- `actor`: The user who triggered the workflow.
+- `url`: The URL to the workflow run.
+- `ref`: The git reference (branch or tag).
+- `duration`: The duration of the job in seconds (if the start time was recorded).
