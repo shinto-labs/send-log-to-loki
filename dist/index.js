@@ -31823,7 +31823,7 @@ const timeFilePath = path.join(
 
 async function writeStartTime() {
   const startTime = Date.now().toString();
-  core.info(`Writing start time: ${startTime}`);
+  core.info(`Writing start time: ${startTime} to ${timeFilePath}`);
   fs.writeFileSync(timeFilePath, startTime);
 }
 
@@ -31855,7 +31855,7 @@ async function sendLog(
       No start time found
       add a step with the following code at the beginning of your workflow to calculate the duration:
       - name: Start time
-        uses: shinto-labs/send-log-to-loki@v1.0.0
+        uses: shinto-labs/send-log-to-loki@v1.0.2
         with:
           measurement: start
       `
