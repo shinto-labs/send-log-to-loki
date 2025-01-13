@@ -9,9 +9,6 @@ public/
 # testing
 coverage/
 
-# production build
-dist/
-
 # Vite cache
 .vite/
 .cache/
