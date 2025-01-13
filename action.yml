@@ -1,42 +1,21 @@
-name: 'Send to Loki'
-description: 'A GitHub Action to send logs to Loki'
+name: 'Send log to Loki'
+description: 'A GitHub Action to send log to Loki'
 inputs:
-  START_TIME:
-    description: 'Start time of the workflow'
-    required: true
-  LOKI_ADDRESS:
-    description: 'Loki server address'
-    required: true
-  LOKI_USERNAME:
-    description: 'Loki username'
-    required: true
-  LOKI_PASSWORD:
-    description: 'Loki password'
-    required: true
-  REPOSITORY:
-    description: 'GitHub repository'
-    required: true
-  WORKFLOW:
-    description: 'GitHub workflow name'
-    required: true
-  STATUS:
-    description: 'Workflow status'
-    required: true
-  RUN_NUMBER:
-    description: 'Run number'
-    required: true
-  ACTOR:
-    description: 'Actor who triggered the workflow'
-    required: true
-  URL:
-    description: 'URL of the workflow run'
-    required: true
-  REF:
-    description: 'Git reference'
-    required: true
-  VALUES:
-    description: 'Additional values'
-    required: false
+  measurement:
+    description: 'Controls the measurement type; "start" to record the start time of the job, "finish" or undefined to send the log message to Loki'
+  status:
+    description: 'Controls the status of the log message; "success" or "failure"'
+  loki_address:
+    description: 'Loki server address required to send log'
+  loki_username:
+    description: 'Loki username required to send log'
+  loki_password:
+    description: 'Loki password required to send log'
+  additional_labels:
+    description: 'Additional labels to be added to the log in logfmt format'
 runs:
-  using: 'node20'
+  using: 'node16'
   main: 'index.js'
+branding:
+  icon: 'send'
+  color: 'yellow'
