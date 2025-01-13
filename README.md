@@ -32,7 +32,7 @@ jobs:
       - name: Run some steps
         run: echo "Running some steps..."
 
-      - name: Send Logs to Loki
+      - name: Send Log to Loki
         uses: shinto-labs/send-log-to-loki@v1.0.0
         with:
           loki_address: "http://your-loki-instance:3100"

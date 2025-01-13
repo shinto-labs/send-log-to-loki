@@ -16,6 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Start time
+        uses: ./
+        with:
+          measurement: start
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -30,10 +35,17 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Update version in package.json
+      - name: Update version in package.json, README.md, and index.js
         run: |
           tag=${{ github.event.inputs.tag }}
-          jq --arg tag "$tag" '.version = $tag' package.json > tmp.$$.json && mv tmp.$$.json package.json
+          sed -i "s/\"version\": \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/\"version\": \"$tag\"/g" package.json
+          sed -i "s/shinto-labs\/send-log-to-loki@v[0-9]\+\.[0-9]\+\.[0-9]\+/shinto-labs\/send-log-to-loki@$tag/g" README.md
+          sed -i "s/shinto-labs\/send-log-to-loki@v[0-9]\+\.[0-9]\+\.[0-9]\+/shinto-labs\/send-log-to-loki@$tag/g" index.js
+
+      - name: Update version in README.md
+        run: |
+          tag=${{ github.event.inputs.tag }}
+          sed -i "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v$tag/g" README.md
 
       - name: Commit and push changes
         run: |
@@ -45,3 +57,12 @@ jobs:
           git push origin main ${{ github.event.inputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send Log to Loki
+        uses: ./
+        with:
+          loki_address: "http://your-loki-instance:3100"
+          loki_username: ${{ secrets.LOKI_USERNAME }}
+          loki_password: ${{ secrets.LOKI_PASSWORD }}
+          status: ${{ job.status }}
+          additional_labels: "example_label=example_value"
