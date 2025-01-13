@@ -33,9 +33,9 @@ jobs:
       - name: Update version in package.json, README.md, and index.js
         run: |
           tag=${{ github.event.inputs.tag }}
-          sed -i "s/\"version\": \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/\"version\": \"$tag\"/g" package.json
-          sed -i "s/shinto-labs\/send-log-to-loki@v[0-9]\+\.[0-9]\+\.[0-9]\+/shinto-labs\/send-log-to-loki@$tag/g" README.md
-          sed -i "s/shinto-labs\/send-log-to-loki@v[0-9]\+\.[0-9]\+\.[0-9]\+/shinto-labs\/send-log-to-loki@$tag/g" index.js
+          jq --arg tag "$tag" '.version = $tag' package.json > tmp.$$.json && mv tmp.$$.json package.json
+          sed -i "s/shinto-labs\/send-log-to-loki@v\+[0-9]\+\.[0-9]\+\.[0-9]\+/shinto-labs\/send-log-to-loki@v${tag#v}/g" README.md
+          sed -i "s/shinto-labs\/send-log-to-loki@v\+[0-9]\+\.[0-9]\+\.[0-9]\+/shinto-labs\/send-log-to-loki@v${tag#v}/g" index.js
 
       - name: Update version in README.md
         run: |
