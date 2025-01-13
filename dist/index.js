@@ -31813,7 +31813,7 @@ module.exports = parseParams
 var __webpack_exports__ = {};
 const core = __nccwpck_require__(7484);
 const github = __nccwpck_require__(3228);
-const { writeFileSync } = __nccwpck_require__(9896);
+const fs = __nccwpck_require__(9896);
 const path = __nccwpck_require__(6928);
 
 const timeFilePath = path.join(
@@ -31824,7 +31824,7 @@ const timeFilePath = path.join(
 async function writeStartTime() {
   const startTime = Date.now().toString();
   core.info(`Writing start time: ${startTime}`);
-  writeFileSync(timeFilePath, startTime);
+  fs.writeFileSync(timeFilePath, startTime);
 }
 
 async function sendLog(
