@@ -1,12 +1,15 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
+const artifact = require("@actions/artifact");
 const fs = require("fs");
+
+const timeFilePath = "time.txt";
 
 async function writeStartTime() {
   const startTime = Date.now().toString();
-  const content = `START_TIME=${startTime}\n`;
-  fs.appendFileSync(process.env.GITHUB_ENV, content);
-  core.info(`Start time: ${startTime}`);
+  fs.writeFileSync(timeFilePath, startTime);
+  const artifactClient = artifact.create();
+  artifactClient.uploadArtifact("start-time", [timeFilePath], ".");
 }
 
 async function sendLog(
@@ -25,8 +28,13 @@ async function sendLog(
   log_message += ` url=${github.context.payload.repository.html_url}/actions/runs/${github.context.runId}`;
   log_message += ` ref=${github.context.ref}`;
 
-  if (process.env.START_TIME) {
-    const startTime = parseInt(process.env.START_TIME, 10);
+  const artifactClient = artifact.create();
+  const downloadResponse = artifactClient.downloadArtifact("start-time", ".");
+
+  if (downloadResponse.artifactItems.length > 0) {
+    const filePath = downloadResponse.artifactItems[0];
+    const data = fs.readFileSync(filePath, "utf8");
+    const startTime = parseInt(data, 10);
     const endTime = Date.now();
     const duration = Math.round((endTime - startTime) / 1000);
     core.info(`Calculated duration from start time: ${duration}`);
