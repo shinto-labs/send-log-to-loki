@@ -29,11 +29,14 @@ async function sendLog(
   log_message += ` url=${github.context.payload.repository.html_url}/actions/runs/${github.context.runId}`;
   log_message += ` ref=${github.context.ref}`;
 
-  const downloadResponse = await artifact.downloadArtifact("start-time", ".");
+  const startTimeArtifact = await artifact.getArtifact("start-time");
+  const downloadResponse = await artifact.downloadArtifact(
+    startTimeArtifact.artifact.id
+  );
+  await artifact.deleteArtifact("start-time");
 
-  if (downloadResponse.artifactItems.length > 0) {
-    const filePath = downloadResponse.artifactItems[0];
-    const data = fs.readFileSync(filePath, "utf8");
+  if (fs.existsSync(downloadResponse.downloadPath)) {
+    const data = fs.readFileSync(downloadResponse.downloadPath, "utf8");
     const startTime = parseInt(data, 10);
     const endTime = Date.now();
     const duration = Math.round((endTime - startTime) / 1000);
