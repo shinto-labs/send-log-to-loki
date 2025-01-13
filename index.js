@@ -10,7 +10,9 @@ const artifact = new DefaultArtifactClient();
 async function writeStartTime() {
   const startTime = Date.now().toString();
   fs.writeFileSync(timeFilePath, startTime);
-  await artifact.uploadArtifact("start-time", [timeFilePath], ".");
+  await artifact.uploadArtifact("start-time", [timeFilePath], ".", {
+    retentionDays: 2,
+  });
 }
 
 async function sendLog(
