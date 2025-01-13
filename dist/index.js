@@ -31814,17 +31814,12 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7484);
 const github = __nccwpck_require__(3228);
 const fs = __nccwpck_require__(9896);
-const path = __nccwpck_require__(6928);
-
-const timeFilePath = path.join(
-  process.env.GITHUB_WORKSPACE || "",
-  "action_time.txt"
-);
 
 async function writeStartTime() {
   const startTime = Date.now().toString();
-  core.info(`Writing start time: ${startTime} to ${timeFilePath}`);
-  fs.writeFileSync(timeFilePath, startTime);
+  const content = `START_TIME=${startTime}\n`;
+  fs.appendFileSync(process.env.GITHUB_ENV, content);
+  core.info(`Start time: ${startTime}`);
 }
 
 async function sendLog(
@@ -31843,8 +31838,8 @@ async function sendLog(
   log_message += ` url=${github.context.payload.repository.html_url}/actions/runs/${github.context.runId}`;
   log_message += ` ref=${github.context.ref}`;
 
-  if (fs.existsSync(timeFilePath)) {
-    const startTime = parseInt(fs.readFileSync(timeFilePath, "utf8"), 10);
+  if (process.env.START_TIME) {
+    const startTime = parseInt(process.env.START_TIME, 10);
     const endTime = Date.now();
     const duration = Math.round((endTime - startTime) / 1000);
     core.info(`Calculated duration from start time: ${duration}`);

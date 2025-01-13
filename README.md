@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Start time
-        uses: shinto-labs/send-log-to-loki@vvv1.0.2
+        uses: shinto-labs/send-log-to-loki@vvvv1.0.2
         with:
           measurement: start
 
@@ -33,7 +33,7 @@ jobs:
         run: echo "Running some steps..."
 
       - name: Send Log to Loki
-        uses: shinto-labs/send-log-to-loki@vvv1.0.2
+        uses: shinto-labs/send-log-to-loki@vvvv1.0.2
         with:
           loki_address: "http://your-loki-instance:3100"
           loki_username: ${{ secrets.LOKI_USERNAME }}
