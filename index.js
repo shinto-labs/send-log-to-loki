@@ -10,7 +10,7 @@ const timeFilePath = path.join(
 
 async function writeStartTime() {
   const startTime = Date.now().toString();
-  core.info(`Writing start time: ${startTime}`);
+  core.info(`Writing start time: ${startTime} to ${timeFilePath}`);
   fs.writeFileSync(timeFilePath, startTime);
 }
 
