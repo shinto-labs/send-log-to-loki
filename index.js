@@ -1,15 +1,16 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
-const artifact = require("@actions/artifact");
+const { DefaultArtifactClient } = require("@actions/artifact");
 const fs = require("fs");
 
 const timeFilePath = "time.txt";
 
+const artifact = new DefaultArtifactClient();
+
 async function writeStartTime() {
   const startTime = Date.now().toString();
   fs.writeFileSync(timeFilePath, startTime);
-  const artifactClient = artifact.create();
-  artifactClient.uploadArtifact("start-time", [timeFilePath], ".");
+  await artifact.uploadArtifact("start-time", [timeFilePath], ".");
 }
 
 async function sendLog(
@@ -28,8 +29,7 @@ async function sendLog(
   log_message += ` url=${github.context.payload.repository.html_url}/actions/runs/${github.context.runId}`;
   log_message += ` ref=${github.context.ref}`;
 
-  const artifactClient = artifact.create();
-  const downloadResponse = artifactClient.downloadArtifact("start-time", ".");
+  const downloadResponse = await artifact.downloadArtifact("start-time", ".");
 
   if (downloadResponse.artifactItems.length > 0) {
     const filePath = downloadResponse.artifactItems[0];
