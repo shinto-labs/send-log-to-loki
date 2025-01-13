@@ -52,6 +52,6 @@ jobs:
           loki_address: ${{ secrets.LOKI_ADDRESS }}
           loki_username: ${{ secrets.LOKI_USERNAME }}
           loki_password: ${{ secrets.LOKI_PASSWORD }}
-          status: success
+          status: ${{ job.status }}
           additional_labels: "example_label=example_value"
 ```
