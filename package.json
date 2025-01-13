@@ -1,6 +1,6 @@
 {
   "name": "send-logs-to-loki",
-  "version": "v1.0.1",
+  "version": "v1.0.3",
   "description": "A GitHub Action to send logs to Loki",
   "main": "index.js",
   "scripts": {
