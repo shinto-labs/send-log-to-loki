@@ -1,6 +1,6 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
-const { writeFileSync } = require("fs");
+const fs = require("fs");
 const path = require("path");
 
 const timeFilePath = path.join(
@@ -11,7 +11,7 @@ const timeFilePath = path.join(
 async function writeStartTime() {
   const startTime = Date.now().toString();
   core.info(`Writing start time: ${startTime}`);
-  writeFileSync(timeFilePath, startTime);
+  fs.writeFileSync(timeFilePath, startTime);
 }
 
 async function sendLog(
