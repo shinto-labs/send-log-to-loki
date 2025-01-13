@@ -19,11 +19,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Start time
-        uses: ./
-        with:
-          measurement: start
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -60,12 +55,3 @@ jobs:
         run: |
           git tag ${{ github.event.inputs.tag }}
           git push origin main ${{ github.event.inputs.tag }}
-
-      - name: Send Log to Loki
-        uses: ./
-        with:
-          loki_address: "http://your-loki-instance:3100"
-          loki_username: ${{ secrets.LOKI_USERNAME }}
-          loki_password: ${{ secrets.LOKI_PASSWORD }}
-          status: ${{ job.status }}
-          additional_labels: "example_label=example_value"
