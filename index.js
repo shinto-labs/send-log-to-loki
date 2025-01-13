@@ -34,9 +34,10 @@ async function sendLog(
     startTimeArtifact.artifact.id
   );
   await artifact.deleteArtifact("start-time");
+  const downloadedFilePath = downloadResponse.downloadPath + "/" + timeFilePath;
 
-  if (fs.existsSync(downloadResponse.downloadPath)) {
-    const data = fs.readFileSync(downloadResponse.downloadPath, "utf8");
+  if (fs.existsSync(downloadedFilePath)) {
+    const data = fs.readFileSync(downloadedFilePath, "utf8");
     const startTime = parseInt(data, 10);
     const endTime = Date.now();
     const duration = Math.round((endTime - startTime) / 1000);
