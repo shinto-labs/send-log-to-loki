@@ -31,14 +31,19 @@ async function sendLog(
   log_message += ` url=${github.context.payload.repository.html_url}/actions/runs/${github.context.runId}`;
   log_message += ` ref=${github.context.ref}`;
 
-  const startTimeArtifact = await artifact.getArtifact("start-time");
-  const downloadResponse = await artifact.downloadArtifact(
-    startTimeArtifact.artifact.id
-  );
-  await artifact.deleteArtifact("start-time");
-  const downloadedFilePath = downloadResponse.downloadPath + "/" + timeFilePath;
+  let downloadedFilePath = "";
+  try {
+    const startTimeArtifact = await artifact.getArtifact("start-time");
+    const downloadResponse = await artifact.downloadArtifact(
+      startTimeArtifact.artifact.id
+    );
+    await artifact.deleteArtifact("start-time");
+    downloadedFilePath = downloadResponse.downloadPath + "/" + timeFilePath;
+  } catch (error) {
+    core.warning(`Failed to download start time artifact: ${error}`);
+  }
 
-  if (fs.existsSync(downloadedFilePath)) {
+  if (downloadedFilePath && fs.existsSync(downloadedFilePath)) {
     const data = fs.readFileSync(downloadedFilePath, "utf8");
     const startTime = parseInt(data, 10);
     const endTime = Date.now();
