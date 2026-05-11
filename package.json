@@ -3,6 +3,7 @@
   "version": "v1.0.3",
   "description": "A GitHub Action to send logs to Loki",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "ncc build index.js -o dist"
@@ -10,11 +11,12 @@
   "author": "Aron Hemmes",
   "license": "ISC",
   "dependencies": {
-    "@actions/artifact": "^2.2.1",
-    "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0"
+    "@actions/artifact": "^6.2.1",
+    "@actions/core": "^3.0.1",
+    "@actions/github": "^9.1.1"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.38.3"
+    "@vercel/ncc": "^0.38.4",
+    "esbuild": "^0.28.0"
   }
 }

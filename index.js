@@ -1,7 +1,7 @@
-const core = require("@actions/core");
-const github = require("@actions/github");
-const { DefaultArtifactClient } = require("@actions/artifact");
-const fs = require("fs");
+import * as core from "@actions/core";
+import * as github from "@actions/github";
+import { DefaultArtifactClient } from "@actions/artifact";
+import fs from "fs";
 
 const timeFilePath = "time.txt";
 
@@ -20,7 +20,7 @@ async function sendLog(
   loki_username,
   loki_password,
   status,
-  additional_labels
+  additional_labels,
 ) {
   let log_message = `workflow="${github.context.workflow}"`;
   log_message += ` repository_owner="${github.context.repo.owner}"`;
@@ -35,7 +35,7 @@ async function sendLog(
   try {
     const startTimeArtifact = await artifact.getArtifact("start-time");
     const downloadResponse = await artifact.downloadArtifact(
-      startTimeArtifact.artifact.id
+      startTimeArtifact.artifact.id,
     );
     await artifact.deleteArtifact("start-time");
     downloadedFilePath = downloadResponse.downloadPath + "/" + timeFilePath;
@@ -59,7 +59,7 @@ async function sendLog(
         uses: shinto-labs/send-log-to-loki@v1.0.3
         with:
           measurement: start
-      `
+      `,
     );
   }
 
@@ -85,7 +85,7 @@ async function sendLog(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Basic ${Buffer.from(
-          `${loki_username}:${loki_password}`
+          `${loki_username}:${loki_password}`,
         ).toString("base64")}`,
       },
       body: JSON.stringify(log_entry),
@@ -127,7 +127,7 @@ async function run() {
       loki_username,
       loki_password,
       status,
-      additional_labels
+      additional_labels,
     );
   }
 }
