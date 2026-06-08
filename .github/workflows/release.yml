@@ -24,7 +24,15 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install safe-chain
+        run: |
+          curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh -s -- --ci
+          export PATH="$HOME/.safe-chain/shims:$HOME/.safe-chain/bin:${PATH}"
+          npm safe-chain-verify
+
       - name: Install dependencies
+        env:
+          SAFE_CHAIN_LOGGING: verbose
         run: npm install
 
       - name: Build
